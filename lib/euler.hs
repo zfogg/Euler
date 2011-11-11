@@ -78,7 +78,7 @@ factorsOf n = [ x | x <- [1 .. n `div` 2], n `mod` x == 0 ] ++ [n]
 arePalindromic :: (Eq a) => [a] -> Bool
 arePalindromic []     = True
 arePalindromic (x:[]) = True
-arePalindromic (x:xs) = x == last xs && (arePalindromic $ init xs)
+arePalindromic (x:xs) = x == last xs && arePalindromic (init xs)
 
 isPalindrome :: (Integral a) => a -> Bool
 isPalindrome = arePalindromic . intToDigits
@@ -104,7 +104,7 @@ transformDigits f = digitsToIntegral . f . intToDigits
 
 fibonacci = 1:1:[ a + b | (a, b) <- zip fibonacci (tail fibonacci) ]
 
-primes = 2:3:5:(filter fastIsPrime $ candidates 7 11)
+primes = 2:3:5: filter fastIsPrime (candidates 7 11)
     where candidates x y = x:y: candidates (x+6) (y+6)
           fastIsPrime n = not $ any isFactor [3, 5 .. intRoot n]
               where isFactor f = n `mod` f == 0

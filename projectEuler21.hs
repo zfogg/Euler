@@ -10,13 +10,13 @@ amicablePairs = [ (x, y) | (x, y) <- uniquePairs [1..10^4], (sigma x) - x == y &
 
 -- Euler's Sigmas.
 -- When n is prime, these functions are equivilent to each other.
-nSigma m n p = parMapStrat ((-) 1) [sigma m, sigma n, sigma p]
+nSigma m n p = parMapStrat ((+) (-1)) [sigma m, sigma n, sigma p]
 
 sigma1 (n, k) = sum $ factors (n^k)
 sigma2 (n, k) = (n^(k+1)-1) `div` (n-1)
 sigma3 (n, k) = (+1) $ sum [ n^x | x <- [1..k] ]
 sigma4 n      = sum $ factors n
-sigma  n      = sigma4 n
+sigma         = sigma4
 
 -- And here is a list of boolean results, as proof.
 -- This proof should return lists of True values.
@@ -34,9 +34,9 @@ allTrue = all $ all (== True)
 
 -- Parallel factors.
 factors   n = 1 : (Main.factorsOf n) ++ [n]
-factorsOf n = let candidates = [2..n `div` 4]
-              in catMaybes $ parMapStrat findMod candidates
-                  where findMod x = if n `rem` x == 0 then Just x else Nothing
+factorsOf n = catMaybes $ parMapStrat findMod candidates
+              where candidates = [2..n `div` 2]
+                    findMod x = if n `rem` x == 0 then Just x else Nothing
 
 parMapStrat = parMap rseq
 

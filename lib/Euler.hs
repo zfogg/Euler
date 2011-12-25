@@ -57,7 +57,7 @@ isPrime n
     | even n || isFactor 5       = False
     | otherwise                  = not $ any isFactor [3, 5 .. root]
     where
-        isFactor f = n `mod` f == 0
+        isFactor f = n `rem` f == 0
         root       = (floor . sqrt . fromIntegral) n
 
 rotateList :: (Integral a) => a -> [b] -> [b]
@@ -73,7 +73,7 @@ digitsToIntegral (x:[]) = x
 digitsToIntegral (x:xs) = x * (10 ^ length xs) + digitsToIntegral xs
 
 factorsOf :: (Integral a) => a -> [a]
-factorsOf n = [ x | x <- [1 .. n `div` 2], n `mod` x == 0 ] ++ [n]
+factorsOf n = [ x | x <- [1 .. n `div` 2], n `rem` x == 0 ] ++ [n]
 
 arePalindromic :: (Eq a) => [a] -> Bool
 arePalindromic []     = True
@@ -98,17 +98,23 @@ digitCount = length . intToDigits
 
 transformDigits f = digitsToIntegral . f . intToDigits
 
+firstDigit i = if i >= 10 then firstDigit (i `div` 10) else i
+lastDigit  i = i `mod` 10
+
 --
 -- Number Sets
 --
 
+-- newL x = let n = 10^x; i = firstDigit n in [ x | x <- [n + i, n+i+10 .. n^2] ]
+-- newL2 = [ x | x <- [10..], lastDigit x == firstDigit x]
+
 fibonacci = 1:1:[ a + b | (a, b) <- zip fibonacci (tail fibonacci) ]
 
-primes = 2:3:5: filter fastIsPrime (candidates 7 11)
+primes = 2:3:5 : filter fastIsPrime (candidates 7 11)
     where candidates x y = x:y: candidates (x+6) (y+6)
-          fastIsPrime n = not $ any isFactor [3, 5 .. intRoot n]
-              where isFactor f = n `mod` f == 0
-                    intRoot    = floor . sqrt . fromIntegral
+          fastIsPrime n = not $ any isFactor [3, 5 .. sqrtOf n]
+              where isFactor f = n `rem` f == 0
+                    sqrtOf     = floor . sqrt . fromIntegral
 
 circlePrimes = filter (all isPrime . circledDigits) primes
     where circledDigits x = [ rotateDigits times x | times <- [1 .. digitCount x] ]

@@ -1,14 +1,12 @@
 module Main where
 
-import Euler
 import Data.List
-import Data.Function
-import Control.Parallel
 import Control.Parallel.Strategies
+import Euler
 
 sumDiagonals n = sum $ (parMap rpar) (sum . diagonals) [0 .. nthOfSideLength]
-    where nthOfSideLength = (n+2) `div` 2 - 1
-          diagonals x = everyNth (x*2) (nthSpiral x)
+    where diagonals x     = everyNth (x*2) (nthSpiral x)
+          nthOfSideLength = (n+2) `div` 2 - 3
 
 nthSpiral 0 = [1]
 nthSpiral n = [

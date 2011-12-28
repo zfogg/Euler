@@ -35,6 +35,9 @@ length' :: (Num b) => [a] -> b
 length' [] = 0
 length' (_:xs) = 1 + length' xs
 
+filter' :: (Eq a) => (a -> Bool) -> [a] -> [a]
+filter' p xs = [ x | x <- xs, p x ]
+
 exponent' :: (Num a) => a -> a -> a
 exponent' n 0 = 1
 exponent' n 2 = n * n
@@ -72,8 +75,8 @@ digitsToIntegral :: (Integral a) => [a] -> a
 digitsToIntegral (x:[]) = x
 digitsToIntegral (x:xs) = x * (10 ^ length xs) + digitsToIntegral xs
 
-factorsOf :: (Integral a) => a -> [a]
-factorsOf n = [ x | x <- [1 .. n `div` 2], n `rem` x == 0 ] ++ [n]
+divisors :: (Integral a) => a -> [a]
+divisors n = filter (((==) 0) . (rem n)) [2..n `div` 2]
 
 arePalindromic :: (Eq a) => [a] -> Bool
 arePalindromic []     = True
@@ -131,7 +134,7 @@ pentagonalNumbers = map (\n -> n * (3*n - 1) `div` 2) [1 ..]
 hexagonalNumbers  = map (\n -> n * (2*n - 1))         [1 ..]
 
 pythagoreanTriplets max = let li = [1..max] in
-    [[a,b,c] | a <- li, b <- li, c <- li, (a^2 + b^2) == (c^2)]
+    [ [a,b,c] | a <- li, b <- li, c <- li, (a^2 + b^2) == (c^2) ]
 
 projectEular14 n
     | n == 0 = [0]

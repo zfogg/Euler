@@ -9,9 +9,8 @@ gridSections :: Int -> [Int]
 gridSections n = [ x | x <- hs++[n `div` 2 + 1]++(reverse hs) ]
     where hs = [1 .. n `div` 2]
 
-grid n sectionCounts = [ take (sectionCounts !! (x-1)) $ repeat x | x <- [1..n+1] ]
-
 newGrid n = let n2 = n^2 in grid n2 (gridSections n2)
+    where grid n sectionCounts = [ take (sectionCounts !! (x-1)) $ repeat x | x <- [1..n+1] ]
 
 gridRoutes (g:[])   = []
 gridRoutes (g:r:[]) = [routes g r]

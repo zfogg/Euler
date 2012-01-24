@@ -19,14 +19,6 @@ main = do
         letters = map (filter isAlpha) numStrs
         letterCount = sum $ map length letters
 
-    -- For debugging purposes:
-    --putStrLn "Enter a number: "
-    --n <- getLine
-    --putStrLn (numberString $ stringToNum n)
-
-    print $ filter isAlpha (numStrs !! ( 342 - 1 ))
-    --print numStrs
-    --print letters
     print letterCount
 
 stringToNum = digitsToIntegral . map digitToInt

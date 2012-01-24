@@ -38,5 +38,5 @@ pZipWith f (x:xs) (y:ys) = recur `par` f x y `pseq` f x y : recur
     where recur = pZipWith f xs ys
 
 main = do
-    --print $ sumSpirals spiralDiagonals1 1001
+    print $ sumSpirals spiralDiagonals1 1001
     print $ sumSpirals spiralDiagonals2 1001

@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Ensure output folder exists.
-if [ ! -d "$bin" ]; then
+if [ ! -d bin ]; then
     mkdir bin
 fi
 
 # Compile it all.
-for i in $(ls | grep .hs); do
-    ghc --make -fforce-recomp -rtsopts -O -threaded $i "./lib/Euler.hs";
-    mv "${i%.*}" ./bin;
+for f in $(ls | grep .hs); do
+    ghc --make -fforce-recomp -rtsopts -O -threaded $f "lib/Euler.hs";
+    mv "${f%.*}" bin; # Move the compiled executable to ./bin/.
 done
 
 # Remove garbage.

@@ -1,26 +1,21 @@
-import Data.List (delete)
-import Data.Set (fromList, toList, fromList)
+import Euler
+import Data.List (delete, foldl1)
+import Data.Set (fromList, toList)
 
-intToDigits :: (Integral a) => a -> [a]
-intToDigits 0 = []
-intToDigits n = intToDigits (n `div` 10) ++ [n `mod` 10]
-
-arePandigital xs =
-    if length xs == 9
-        then pandigital xs [1 .. 9]
-        else False
-    where
-        pandigital []     ys = False
-        pandigital (x:[]) ys = x `elem` ys
-        pandigital (x:xs) ys = x `elem` ys && pandigital xs (delete x ys)
+arePandigital xs
+    | length xs == 9 = pandigital xs [1 .. 9]
+    | otherwise      = False
+    where pandigital []     ys = False
+          pandigital (x:[]) ys = x `elem` ys
+          pandigital (x:xs) ys = x `elem` ys && pandigital xs (delete x ys)
 
 panProducts = [ x*y | x <- [1..10^4], y <- [1.. 10^3], valid x y ]
-    where valid x y = arePandigital $ xDigits++yDigits++xyDigits
-              where (xDigits, yDigits, xyDigits) = (intToDigits x, intToDigits y, intToDigits (x*y))
+    where valid x y = arePandigital $ foldl1 (++) digitList
+              where digitList = map intToDigits [x, y, x*y]
 
 setNub = toList . fromList
 
 main = do
     putStr "\n\tResults: "
-    putStr $ show $ (sum . setNub) panProducts
+    print $ (sum . setNub) panProducts
     putStrLn "\n"

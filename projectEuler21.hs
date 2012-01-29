@@ -1,8 +1,6 @@
-module Main where
-
+import Euler
 import Data.List
 import Control.Parallel
-import Euler
 
 amicablePairs = filter parIsAmic (uniquePairs [2..10^3])
     where parIsAmic (x, y) = (q `par` p) && (p `pseq` q)
@@ -11,7 +9,7 @@ amicablePairs = filter parIsAmic (uniquePairs [2..10^3])
                    q = amicable y x
 
 -- Euler's Sigmas.
-nSigma m n p = map ((+) (-1)) [sigma m, sigma n, sigma p]
+nSigma m n p = map ((-1) +) [sigma m, sigma n, sigma p]
 
 sigma n    = sum $ factors n
 
@@ -34,10 +32,5 @@ allTrue = all and
 -- Et cetera.
 
 factors n = 1 : divisors n ++ [n]
-reFactors n = 1 : (divisors n) ++ [n]
-    where f []     = []
-          f (x:xs) = if n `rem` x == 0
-                        then x : f xs
-                        else     f xs
 
-main = do print $ amicablePairs
+main = print amicablePairs

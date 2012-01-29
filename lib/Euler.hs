@@ -7,36 +7,8 @@ import qualified Data.Map as Map
 import qualified Data.Set as Set
 
 
-addVector2 :: (Integral a) => (a, a) -> (a, a) -> (a, a)
-addVector2 (x1, y1) (x2, y2) = (x1 + x2, y1 + y2)
-
-directionVector2 :: (Integral a) => (a, a) -> (a, a) -> (a, a)
-directionVector2 (x1, y1) (x2, y2) = (x1 - x2, y1 - y2)
-
 hypotenuse :: (Integral a, Floating b) => a -> a -> b
 hypotenuse a b = sqrt $ fromIntegral (a^2 + b^2)
-
-distanceVector2 :: (Integral a, Floating b) => (a, a) -> (a, a) -> b
-distanceVector2 (x1, y1) (x2, y2) = hypotenuse dx dy
-    where (dx, dy) = directionVector2 (x1, y1) (x2, y2)
-
-head' :: [a] -> a
-head' (x:_) = x
-
-tail' :: [a] -> [a]
-tail' (x:[]) = [x]
-tail' (x:xs) = xs
-
-last' :: [a] -> a
-last' (x:[]) = x
-last' (_:xs) = last' xs
-
-length' :: (Num b) => [a] -> b
-length' [] = 0
-length' (_:xs) = 1 + length' xs
-
-filter' :: (Eq a) => (a -> Bool) -> [a] -> [a]
-filter' p xs = [ x | x <- xs, p x ]
 
 exponent' :: (Num a) => a -> a -> a
 exponent' n 0 = 1
@@ -46,12 +18,6 @@ exponent' n p = n * exponent' n (p-1)
 factorial' :: (Integral a) => a -> a
 factorial' 1 = 1
 factorial' n = n * factorial' (n-1)
-
-add' :: (Num a) => a -> a -> a
-add' a b = a + b
-
-subtract' :: (Num a) => a -> a -> a
-subtract' a b = a - b
 
 isPrime :: (Integral a) => a -> Bool
 isPrime n
@@ -76,7 +42,7 @@ digitsToIntegral (x:[]) = x
 digitsToIntegral (x:xs) = x * (10 ^ length xs) + digitsToIntegral xs
 
 divisors :: (Integral a) => a -> [a]
-divisors n = filter (((==) 0) . (rem n)) [2..n `div` 2]
+divisors n = filter ((== 0) . rem n) [2..n `div` 2]
 
 arePalindromic :: (Eq a) => [a] -> Bool
 arePalindromic []     = True

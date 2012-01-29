@@ -2,17 +2,18 @@ import Euler
 import Data.List
 import Data.Char
 
+
 numberString n =
     let d = intToDigits n in
         case (length d, d) of
             (0, _)       -> ""
-            (1, (x:_))   -> ones n
-            (2, (x:y:_)) -> if n > 10 && n < 20 then teens y
+            (1, x:_)   -> ones n
+            (2, x:y:_) -> if n > 10 && n < 20 then teens y
                             else tens x ++ if (== 0) y then []
                                            else "-" ++ ones y
-            (3, (x:xs))  -> ones x ++ " hundred" ++ if all (== 0) xs then []
+            (3, x:xs)  -> ones x ++ " hundred" ++ if all (== 0) xs then []
                                                     else " and " ++ numberString (digitsToIntegral xs)
-            (4, (x:xs))  -> ones x ++ " thousand " ++ numberString (digitsToIntegral xs)
+            (4, x:xs)  -> ones x ++ " thousand " ++ numberString (digitsToIntegral xs)
 
 main = do
     let numStrs = map numberString [1 .. 1000]

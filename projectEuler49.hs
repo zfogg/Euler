@@ -1,8 +1,8 @@
+import Euler
 import Data.List
 import Data.Maybe
 import Control.Parallel.Strategies
 import qualified Data.Set as Set
-import Euler
 
 -- Main data flow.
 primesToCheck         = listRange (<10^3) (<10^4) primes
@@ -20,7 +20,8 @@ validation n = find (isValid n) . permutations
 
 -- To prove:
 proof = catMaybes $ (setNub . sort) proofCandidates
-main = do print proof
+
+main = print proof
 
 -- Helper functions.
 

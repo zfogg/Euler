@@ -1,9 +1,7 @@
-module Main where
-
+import Euler
 import Data.List
 import Control.Parallel
 import Control.Parallel.Strategies
-import Euler
 
 sumSpirals spirals n = sum $ spirals (nthSquare n)
     where nthSquare n = (n+2) `div` 2 - 1

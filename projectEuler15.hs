@@ -4,22 +4,6 @@
 
 import Data.List
 
--- The following bits were never finished.
-gridSections :: Int -> [Int]
-gridSections n = [ x | x <- hs++[n `div` 2 + 1]++(reverse hs) ]
-    where hs = [1 .. n `div` 2]
-
-newGrid n = let n2 = n^2 in grid n2 (gridSections n2)
-    where grid n sectionCounts = [ take (sectionCounts !! (x-1)) $ repeat x | x <- [1..n+1] ]
-
-gridRoutes (g:[])   = []
-gridRoutes (g:r:[]) = [routes g r]
-gridRoutes (g:rid)  = [routes g (head rid)] ++ (gridRoutes rid)
-routes xs ys = [ (x, y) | x <- xs, y <- ys, x < y ]
-
-
--- Forget that. Let's use Pascal's Triangle. It works.
-
 memoizeWith :: (a -> a -> a) -> [a] -> [a] -> [a]
 memoizeWith f xs []         = xs
 memoizeWith f [] ys         = ys
@@ -33,5 +17,4 @@ pascal = iterate (extendWith (+)) [1]
 -- The answer is the biggest number in the 40th row of Pascal's Triangle.
 -- The triangle is zero indexed.
 
-main = do
-    print $ (last . sort) $ pascal !! 40
+main = print $ (last . sort) $ pascal !! 40

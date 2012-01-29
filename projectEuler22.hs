@@ -1,5 +1,3 @@
-module Main where
-
 import Data.List (sort, zipWith)
 import Data.Char (isAlpha, ord)
 import Data.List.Split (splitOn)

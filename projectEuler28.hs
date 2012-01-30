@@ -3,38 +3,43 @@ import Data.List
 import Control.Parallel
 import Control.Parallel.Strategies
 
+
+sumSpirals :: (Num a, Integral b) => (b -> [a]) -> b -> a
 sumSpirals spirals n = sum $ spirals (nthSquare n)
-    where nthSquare n = (n+2) `div` 2 - 1
+    where nthSquare x = (x + 2) `div` 2 - 1
 
 -- Method #1.
-spiralDiagonals1 n = 1 : parallelMap (sum . diagonals) [1 .. n]
-    where diagonals x = everyNth (x*2) (nthSpiral x)
+spiralDiagonals1 :: Int -> [Integer]
+spiralDiagonals1 n = 1 : map' (sum . diagonals) [1 .. n]
+    where diagonals x = everyNth (x * 2) (nthSpiral x)
 
 -- Method #2. Quicker and more parallel than Method #1.
+spiralDiagonals2 :: Int -> [Integer]
 spiralDiagonals2 n = 1 : map sum diagonals
-    where diagonals = zipWith ($) everyDoubles spirals
-              where spirals      = parallelMap nthSpiral [1 .. n]
-                    everyDoubles = parallelMap everyDouble [1 .. n]
-                        where everyDouble = everyNth . (2*)
+    where diagonals = zipWith' ($) everyDoubles spirals
+              where spirals      = map' nthSpiral [1 .. n]
+                    everyDoubles = map (everyNth . (2 *)) [1 .. n]
 
 nthSpiral :: Int -> [Integer]
 nthSpiral 0 = [1]
 nthSpiral n = [start .. end]
-    where start = 1 + last (nthSpiral (n - 1))
-          end   = 1 + 8*triangleNumbers !! (n - 1)
+    where start = 1 + (last . nthSpiral) (n - 1)
+          end   = 1 + 8 * triangleNumbers !! (n - 1)
 
 -- Helper functions
-
+everyNth :: (Num a, Enum a) => a -> [b] -> [b]
 everyNth n = map snd . filter ((== n) . fst) . zip (cycle [1 .. n])
 
-parallelMap = parMap rpar
+map' = parMap rpar
 
--- Depracated, but still pretty cool.
-pZipWith f [] _ = []
-pZipWith f _ [] = []
-pZipWith f (x:xs) (y:ys) = recur `par` f x y `pseq` f x y : recur
-    where recur = pZipWith f xs ys
+-- zipWith in parallel.
+zipWith' :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipWith' f [] _ = []
+zipWith' f _ [] = []
+zipWith' f (x:xs) (y:ys) = p' `par` f' `pseq` f' : p'
+    where p' = zipWith' f xs ys
+          f' = f x y
 
 main = do
-    print $ sumSpirals spiralDiagonals1 1001
+    --print $ sumSpirals spiralDiagonals1 1001
     print $ sumSpirals spiralDiagonals2 1001

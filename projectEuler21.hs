@@ -5,12 +5,10 @@ import Control.Parallel
 
 amicablePairs = filter parallelIsAmicable (uniquePairs [2..10^3])
     where parallelIsAmicable (x, y) = (q `par` p) && (p `pseq` q)
-             where amicable x y = sigma x - x == y
-                   (p, q) = (amicable x y, amicable y x)
+            where (p, q) = (amicable x y, amicable y x)
+                  amicable x y = sigma x - x == y
 
 -- Euler's Sigmas.
-nSigma x k = map ((-1) +) [sigma1 x k, sigma2 x k, sigma3 x k]
-
 sigma x    = sum $ factors x
 
 -- { s1 = s2 = s3   if x is prime
@@ -23,7 +21,7 @@ sigma3 x k = (x^(k+1)-1) `div` (x-1)
 -- This proof should return lists of True values.
 sigmaProof = [ checks [sigma1, sigma2, sigma3] k n | k <- [2..10], n <- primes ]
     where checks xs k n = [ check fs k n | fs <- uniquePairs xs ]
-              where check (f1, f2) k n = f1 k n == f2 k n
+            where check (f1, f2) k n = f1 k n == f2 k n
 
 uniquePairs xs = [ (head x, y) | x <- (init $ tails xs), y <- (tail x) ]
 

@@ -3,8 +3,8 @@ import Data.List
 import Data.Function
 import Control.Parallel
 
-amicablePairs = filter parIsAmic (uniquePairs [2..10^3])
-    where parIsAmic (x, y) = (q `par` p) && (p `pseq` q)
+amicablePairs = filter parallelIsAmicable (uniquePairs [2..10^3])
+    where parallelIsAmicable (x, y) = (q `par` p) && (p `pseq` q)
              where amicable x y = sigma x - x == y
                    (p, q) = (amicable x y, amicable y x)
 

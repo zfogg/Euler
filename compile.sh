@@ -16,6 +16,6 @@ for f in $(ls | egrep "projectEuler[0-9].*\.hs"); do
 done
 
 # Remove garbage.
-for i in *.hi *.o; do
-    find -name $i -exec rm -f {} \;
+for i in \*.hi \*.o; do
+    find . -name "$i" -exec rm -f {} \;
 done

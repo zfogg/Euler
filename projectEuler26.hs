@@ -8,8 +8,8 @@ import Control.Parallel.Strategies
 main = print $ solution [2..1000-1]
 
 solution = maximumBy (compare `on` periodLength) . solutions
-    where solutions    = (parMap rdeepseq) repeatingDigits . map (1%)
-          periodLength = length . \(_, _, c) -> c
+    where periodLength = length . \(_, _, c) -> c
+          solutions    = (parMap rdeepseq) repeatingDigits . map (1%)
 
 digits :: Rational -> [Int]
 digits 0 = []

@@ -10,7 +10,7 @@ import qualified Data.Set as Set
 hypotenuse :: (Integral a, Floating b) => a -> a -> b
 hypotenuse a b = sqrt $ fromIntegral (a^2 + b^2)
 
-exponent' :: (Num a) => a -> a -> a
+exponent' :: (Integral a) => a -> a -> a
 exponent' n 0 = 1
 exponent' n 2 = n * n
 exponent' n p = n * exponent' n (p-1)
@@ -89,6 +89,7 @@ circlePrimes = filter (all isPrime . circledDigits) primes
     where circledDigits x = [ rotateDigits times x | times <- [1 .. digitCount x] ]
           rotateDigits    = transformDigits . rotateList
 
+smallestPandigital b = b^(b-1) + sum [ d*b^(b-1-d) | d <- [2..b-1] ]
 pandigitals = filter isPandigital [1..]
 isPandigital x = pandigital (intToDigits x) [1 .. digitCount x ]
     where pandigital []     ys = False

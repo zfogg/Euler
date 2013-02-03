@@ -10,11 +10,6 @@ import qualified Data.Set as Set
 hypotenuse :: (Integral a, Floating b) => a -> a -> b
 hypotenuse a b = sqrt $ fromIntegral (a^2 + b^2)
 
-exponent' :: (Integral a) => a -> a -> a
-exponent' n 0 = 1
-exponent' n 2 = n * n
-exponent' n p = n * exponent' n (p-1)
-
 factorial' :: (Integral a) => a -> a
 factorial' 1 = 1
 factorial' n = n * factorial' (n-1)
@@ -74,9 +69,6 @@ lastDigit  i = i `mod` 10
 -- Number Sets
 --
 
--- newL x = let n = 10^x; i = firstDigit n in [ x | x <- [n + i, n+i+10 .. n^2] ]
--- newL2 = [ x | x <- [10..], lastDigit x == firstDigit x]
-
 fibonacci = 1:1:[ a + b | (a, b) <- zip fibonacci (tail fibonacci) ]
 
 primes = 2:3:5 : filter fastIsPrime (candidates 7 11)
@@ -99,12 +91,3 @@ isPandigital x = pandigital (intToDigits x) [1 .. digitCount x ]
 triangleNumbers   = map (\n -> n * (n-1) `div` 2)     [2 ..]
 pentagonalNumbers = map (\n -> n * (3*n - 1) `div` 2) [1 ..]
 hexagonalNumbers  = map (\n -> n * (2*n - 1))         [1 ..]
-
-pythagoreanTriplets max = let li = [1..max] in
-    [ [a,b,c] | a <- li, b <- li, c <- li, (a^2 + b^2) == (c^2) ]
-
-projectEular14 n
-    | n == 0 = [0]
-    | n == 1 = [n]
-    | even n = n : projectEular14 (n `div` 2)
-    | odd  n = n : projectEular14 (3*n + 1)

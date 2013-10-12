@@ -83,6 +83,7 @@ circlePrimes = filter (all isPrime . circledDigits) primes
     where circledDigits x = [ rotateDigits times x | times <- [1 .. digitCount x] ]
           rotateDigits    = transformDigits . rotateList
 
+smallestPandigital b = b^(b-1) + sum [ d*b^(b-1-d) | d <- [2..b-1] ]
 pandigitals = filter isPandigital [1..]
 isPandigital x = pandigital (intToDigits x) [1 .. digitCount x ]
     where pandigital []     ys = False

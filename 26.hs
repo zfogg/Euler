@@ -5,7 +5,7 @@ import Data.Function
 import Control.Parallel.Strategies
 
 
-main = print $ solution [2..1000-1]
+main = print $ solution [2..(10^3)-1]
 
 solution = maximumBy (compare `on` periodLength) . solutions
     where periodLength = length . \(_, _, c) -> c
@@ -16,7 +16,7 @@ digits 0 = []
 digits x = d : digits (10*x - fromIntegral d)
     where d = floor (10*x)
 
--- Returns (denominator, non-repeating digits, repeating digits)
+-- :: (denominator, non-repeating_digits, repeating_digits)
 repeatingDigits :: Rational -> (Integer, [Int], [Int])
 repeatingDigits n
     | finite n  = (d, ds, [])
@@ -34,7 +34,7 @@ divides xs ys = 0 == xs `modLength` ys && ys == take (length ys) (cycle xs)
     where modLength xs ys = length ys `mod` length xs
 
 finite :: Rational -> Bool
-finite x = (count 2 pf) + (count 5 pf) == length pf
+finite x =  length pf == (count 2 pf) + (count 5 pf)
     where pf = primeFactors (denominator x)
 
 primePowerFactors :: Integer -> [(Integer, Int)]
@@ -56,4 +56,5 @@ factors = nub .  map product .
 count :: (Eq a) => a -> [a] -> Int
 count x = length . filter (== x)
 
-take' = genericTake -- So that I don't have to call fromIntegral.
+-- So that I don't have to call fromIntegral.
+take' = genericTake

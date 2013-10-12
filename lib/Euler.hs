@@ -71,6 +71,8 @@ lastDigit  i = i `mod` 10
 
 fibonacci = 1:1:[ a + b | (a, b) <- zip fibonacci (tail fibonacci) ]
 
+candidates' x y = x:y: candidates' (x+6) (y+6)
+
 primes = 2:3:5 : filter fastIsPrime (candidates 7 11)
     where candidates x y = x:y: candidates (x+6) (y+6)
           fastIsPrime n = not $ any isFactor [3, 5 .. sqrtOf n]

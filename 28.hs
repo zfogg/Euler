@@ -24,7 +24,7 @@ nthSpiral :: Int -> [Integer]
 nthSpiral 0 = [1]
 nthSpiral n = [1 + (last . nthSpiral) (n - 1)
                 ..
-              1 + 8 * triangleNumbers !! (n - 1)]
+               1 + 8 * triangleNumbers !! (n - 1)]
 
 -- Helper functions
 everyNth n = map snd . filter ((== n) . fst) . zip (cycle [1 .. n])

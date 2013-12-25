@@ -4,17 +4,20 @@
 
 import Data.List
 
-memoizeWith :: (a -> a -> a) -> [a] -> [a] -> [a]
-memoizeWith f xs []         = xs
-memoizeWith f [] ys         = ys
-memoizeWith f (x:xs) (y:ys) = f x y : memoizeWith f xs ys
 
-extendWith f [] = []
-extendWith f xs@(x:ys) = x : memoizeWith f xs ys
+instance Num a => Num [a] where
+    (f:fs) + (g:gs) = f+g : fs+gs
+    fs + []         = fs
+    [] + gs         = gs
+    (f:fs) * (g:gs) = f*g : [f]*gs + fs*(g:gs)
+    _ * _           = []
+    abs             = undefined
+    signum          = map signum
+    fromInteger n   = [fromInteger n]
+    negate          = map (\x -> -x)
 
-pascal = iterate (extendWith (+)) [1]
 
--- The answer is the biggest number in the 40th row of Pascal's Triangle.
--- The triangle is zero indexed.
+pascalTriangle = map ([1, 1] ^) [0..]
 
-main = print $ (last . sort) $ pascal !! 40
+
+main = print . last . sort $ pascalTriangle !! 40

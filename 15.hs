@@ -6,18 +6,20 @@ import Data.List
 
 
 instance Num a => Num [a] where
-    (f:fs) + (g:gs) = f+g : fs+gs
-    fs + []         = fs
-    [] + gs         = gs
-    (f:fs) * (g:gs) = f*g : [f]*gs + fs*(g:gs)
+    (x:xs) + (y:ys) = x+y : xs+ys
+    xs + []         = xs
+    [] + ys         = ys
+    (x:xs) * (y:ys) = x*y : [x]*ys + xs*(y:ys)
     _ * _           = []
     abs             = undefined
     signum          = map signum
     fromInteger n   = [fromInteger n]
-    negate          = map (\x -> -x)
+    negate          = map negate
 
 
-pascalTriangle = map ([1, 1] ^) [0..]
+pascalsTriangle = map ([1, 1] ^) [0..]
+
+solution = last . sort . (pascalsTriangle !!)
 
 
-main = print . last . sort $ pascalTriangle !! 40
+main = print $ solution 40

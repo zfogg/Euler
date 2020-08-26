@@ -1,0 +1,7 @@
+{
+    "telemetry.enableTelemetry": false,
+    "terminal.integrated.experimentalUseTitleEvent": true,
+    "workbench.preferredLightColorTheme": "Default Dark+",
+    "workbench.colorTheme": "Default Dark+",
+    "files.trimTrailingWhitespace": true
+}
